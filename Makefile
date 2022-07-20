@@ -1,7 +1,6 @@
 CC = g++
 
-CFLAGS = -Wall
-DFLAGS = -g
+CFLAGS = -Wall -g
 
 default: sasm 
 
@@ -14,8 +13,8 @@ sasm.o: sasm.cpp Symbol.h Instruction.h
 Symbol.o: Symbol.cpp
 	$(CC) $(CFLAGS) -c Symbol.cpp
 
-Instruction.o: Instruction.cpp
-	$(CC) $(CFLAGS) -c Instruction.cpp
+Instruction.o: Instruction.cpp Symbol.h
+	$(CC) $(CFLAGS) -c Instruction.cpp Symbol.h
 
 clean:
 	$(RM) sasm *.o *~ *.gch

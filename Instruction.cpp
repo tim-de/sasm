@@ -1,11 +1,11 @@
 #include <string.h>
-#include "Symbol.h"
 #include "Instruction.h"
+#include "Symbol.h"
 
-Instruction::Instruction(std::string line) {
-	offset_ = 0;
-	Symbol subtrahend_(std::string("none"));
-	Symbol minuend_(std::string("none"));
-	Symbol jump_(std::string("none"));
+Instruction::Instruction(const std::string& line) 
+:	offset_(0),
+	subtrahend_("none"),
+	minuend_("none"),
+	jump_("none")
+{}
 
-}

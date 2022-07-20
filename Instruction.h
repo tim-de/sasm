@@ -6,7 +6,7 @@
 
 class Instruction {
 	public:
-		Instruction(std::string line);
+		Instruction(const std::string& line);
 	private:
 		size_t offset_;
 		Symbol subtrahend_;
