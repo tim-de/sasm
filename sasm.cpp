@@ -5,50 +5,49 @@
 #include <tclap/CmdLine.h>
 #include "Symbol.h"
 #include "Instruction.h"
+#include "utils.h"
 
-std::vector<std::string> split_str(std::string s, std::string delimiter) {
-	std::vector<std::string> s_split;
-	size_t pos = 0;
-	std::string token;
-	while ((pos = s.find(delimiter)) != std::string::npos) {
-		token = s.substr(0, pos);
-		s_split.push_back(token);
-		s.erase(0, pos + delimiter.length());
-	}
-	s_split.push_back(s);
-	return s_split;
-}
 
 
 int main(int argc, char** argv)
 {
-	std::string infile;
+	// Parse command line arguments and options with TCLAP
 	bool debug;
+	std::string infile, outfile;
 	try {
 		TCLAP::CmdLine cmd("Assembler for subleq assembly language.", ' ', "0.1");
 
-		TCLAP::SwitchArg debugSwitch("d", "debug", "Print debug information", cmd, false);
+		// Add options here
+		TCLAP::SwitchArg debugswitch("d", "debug", "Print debug information", cmd, false);
 
-		TCLAP::UnlabeledValueArg<std::string> infileName("ifilename", "Input file name", false, "in.sq", "string", cmd);
+		TCLAP::ValueArg<std::string> outfilename("o", "outfile", "Output file name", false, "", "string", cmd);
 
+		TCLAP::UnlabeledValueArg<std::string> infilename("infile", "Input file name", false, "in.sq", "string", cmd);
+		// End of option specifiers
 
+		// Parse argc and argv
 		cmd.parse(argc, argv);
 		
-		debug = debugSwitch.getValue();
-		infile = infileName.getValue();
+		// Collect into variables
+		debug = debugswitch.getValue();
+		infile = infilename.getValue();
+		outfile = outfilename.getValue();
+
 	} catch (TCLAP::ArgException &e)
 	{ std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
+	// End of command line parsing
 
+	// Instantiate file object
 	std::ifstream readFile(infile);
 	
 	std::string fileline;
-	//std::vector instructions;
-	while (getline (readFile, fileline)) {
-		for (std::string line : split_str(fileline, ";")) {
-			if (line.length() != 0) {
-				std::cout << line << std::endl;
+	while (getline( readFile, fileline )) {
+		std::cout << "in : " << fileline << std::endl;
+		for (std::string line : split_str(fileline, ";", true)) {
+			//if (line.length() != 0) {
+			if (1) {
+				std::cout << "out: " << line << std::endl;
 			}
-			//instructions.push_back(line);
 		}
 	}
 	readFile.close();

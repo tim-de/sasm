@@ -3,12 +3,14 @@
 
 #include <string.h>
 #include "Symbol.h"
+#include "utils.h"
 
 class Instruction {
 	public:
-		Instruction(const std::string& line);
+		parseLine(const std::string& line, offset=0, SymTab& table);
 	private:
-		size_t offset_;
+		Instruction();
+		size_t _offset;
 		Symbol subtrahend_;
 		Symbol minuend_;
 		Symbol jump_;
