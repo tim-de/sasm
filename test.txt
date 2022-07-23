@@ -1,6 +1,0 @@
-this file is
-to test;;the line;reading
-and string splitting;functions
-I have written;;;and things like;that
-;so what does it do here?
-and what about here?;

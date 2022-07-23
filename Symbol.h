@@ -5,12 +5,15 @@
 
 class Symbol {
 	public:
+		Symbol();
 		Symbol(const std::string& name, const size_t offset);
 		Symbol(const std::string& name);
-		Symbol();
+		Symbol(const size_t offset);
+		Symbol(const Symbol& other);
+		//Symbol(Symbol&& other);
 		size_t offset() const;
 		int locate(size_t offset);
-		bool located();
+		const bool located() const;
 		const std::string& name() const;
 	private:
 		size_t _offset;
