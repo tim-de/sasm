@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
-#include "Symbol.h"
+#include "Symbol.hpp"
+#include "utils.hpp"
 
 Symbol::Symbol():
 	_offset(0),
@@ -13,6 +14,14 @@ Symbol::Symbol(const std::string& name, const size_t offset):
 	_located(true),
 	_name(name)
 {}
+/*
+ * Code to be used to initialise element offset in SymList
+	std::vector<std::string> split = split_str(_name, "-", true);
+	if (split.size() > 1) {
+		_name = split[0];
+		_increment = - try_stoi(split[1]);
+	}
+*/
 
 // Pattern for when the label is used before it has been defined
 Symbol::Symbol(const std::string& name):

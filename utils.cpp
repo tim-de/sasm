@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include "utils.h"
+#include "utils.hpp"
 
 std::vector<std::string> split_str(const std::string& s, const char* delimiter, const bool ignore_empty)
 {
@@ -49,14 +49,31 @@ std::vector<std::string> get_instructions(const std::string& infile)
 	return instructions;
 }
 
+int try_stoi(const std::string& numstr, size_t* idx, int base)
+{
+	int value;
+	try {
+		value = std::stoi(numstr, idx, base);
+	}
+	catch (const std::invalid_argument& err) {
+		std::cerr << "Invalid argument: " << err.what() << std::endl;
+		value = 0;
+	}
+	catch (const std::out_of_range& err) {
+		std::cerr << "Out of range: " << err.what() << std::endl;
+		value = 0;
+	}
+	return value;
+}
+
 size_t str_to_size_t(const std::string num_s)
 {
 	//std::cerr << "\"" << num_s << "\"" << stoi(num_s)+1 << std::endl;
 	if (num_s.substr(0,2) == "0x") {
-		return (size_t) stoi(num_s.substr(2), 0, 16);
+		return (size_t) std::stoi(num_s.substr(2), nullptr, 16);
 	}
 	else {
-		return (size_t) stoi(num_s);
+		return (size_t) std::stoi(num_s);
 	}
 }
 
@@ -65,4 +82,33 @@ const std::string name_static_symbol(const size_t offset)
 	std::string name("_static_");
 	name = name + std::to_string(offset);
 	return name;
+}
+
+const int lazy_log_2(int num) {
+	int count = 0;
+	while (num != 1) {
+		num = num >> 1;
+		count += 1;
+	}
+	return count;
+}
+
+const Width::Enum itowidth(int num)
+{
+	if (num <= 8) {
+		return Width::b8;
+	}
+	else if (num <= 16) {
+		return Width::b16;
+	}
+	else {
+		return Width::b32;
+	}
+}
+
+void putchars(const size_t value, Width::Enum width)
+{
+	for (int i = 0; i < 1 << width; i++) {
+		putchar(value >> 8 * i);
+	}
 }

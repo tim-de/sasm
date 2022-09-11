@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Symbol.h"
-#include "SymTab.h"
-#include "utils.h"
+#include "Symbol.hpp"
+#include "SymTab.hpp"
+#include "utils.hpp"
 
 class SymList {
 	// SymList is the listing of the program, formed of pointers to
@@ -14,14 +14,15 @@ class SymList {
 	// once all Symbols have been successfully located.
 	// It is used to perform the actual assembly
 	public:
-		SymList(const size_t entry=0, const BitWidth width=b8);
-		int parseLine(const std::string& line, const size_t offset, SymTab& table);
+		SymList(const size_t entry=0, Width::Enum width=Width::b8);
+		int parseLine(std::string& line, const size_t offset, SymTab& table);
 		int parseFile(const std::vector<std::string>& instructions, SymTab& table);
-		void printOut();
+		void printOut() const;
+		void binaryOut(bool loader) const;
 	private:
 		size_t _entry;
-		uint8_t _bit_width;
-		std::vector<Symbol*> _list;
+		Width::Enum _width;
+		std::vector< std::pair< Symbol*, int32_t > > _list;
 };
 
 #endif

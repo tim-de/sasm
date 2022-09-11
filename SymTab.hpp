@@ -3,8 +3,8 @@
 
 #include <string>
 #include <unordered_map>
-#include "Symbol.h"
-#include "utils.h"
+#include "Symbol.hpp"
+#include "utils.hpp"
 
 class SymTab {
 	public:

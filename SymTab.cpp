@@ -1,9 +1,9 @@
 #include <string>
 #include <unordered_map>
 #include <iostream>
-#include "Symbol.h"
-#include "utils.h"
-#include "SymTab.h"
+#include "Symbol.hpp"
+#include "utils.hpp"
+#include "SymTab.hpp"
 
 SymTab::SymTab() {}
 
