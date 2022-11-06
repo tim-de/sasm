@@ -48,18 +48,18 @@ int SymList::parseLine(std::string& line, const size_t offset, SymTab& table)
 			std::string name = sym.substr(0, sym.length()-1);
 			if (table.contains(name)) {
 				// Encountering label definition after label has been used
-				if (table.locateSymbol(name, offset+position) != 0) {return -2;}
+				if (table.locateSymbol(name, offset + (position << _width)) != 0) {return -2;}
 			}
 			else {
 				// Encountering label definition before label is used
-				if (table.addSymbol(name, offset+position) != 0) {return -3;}
+				if (table.addSymbol(name, offset + (position << _width)) != 0) {return -3;}
 			}
 		}
 		else {
 
 			// This is an operand of an instruction
 			int increment = 0;
-			// This section handles operands of the form label+-offset
+			// This section handles operands of the form label+/-offset
 			bool minus = false;
 			std::vector<std::string> split = split_str(sym, "+", true);
 			if (split.size() <= 1) {
@@ -69,6 +69,7 @@ int SymList::parseLine(std::string& line, const size_t offset, SymTab& table)
 			if (split.size() > 1) {
 				sym = split[0];
 				increment = (minus) ? - try_stoi(split[1]) : try_stoi(split[1]);
+				//std::cerr << sym << " " << increment << std::endl;
 			}
 
 			if (!table.contains(sym)) {
@@ -121,7 +122,19 @@ void SymList::printOut() const
 			std::cout << std::endl;
 			lnum = 0;
 		}
-		std::cout << std::setw(2) << std::hex << sym->offset() + increment << " ";
+		uint32_t mask;
+		switch (_width) {
+			case Width::b8:
+				mask = 0xff;
+				break;
+			case Width::b16:
+				mask = 0xffff;
+				break;
+			case Width::b32:
+				mask = 0xffffffff;
+				break;
+		}
+		std::cout << "0x" << std::noshowbase << std::hex << std::setw(2<<_width) << ((sym->offset() + increment) & mask) << " ";
 		lnum ++;
 	}
 	std::cout << std::endl;
@@ -130,7 +143,7 @@ void SymList::printOut() const
 void SymList::binaryOut(bool loader) const
 {
 	if (loader) {
-		putchars(_list.size(), _width);
+		putchars(_list.size() << _width, _width);
 	}
 	for (unsigned i = 0; i < _list.size(); i++) {
 		Symbol* bsym = _list[i].first;

@@ -46,7 +46,9 @@ int main(int argc, char** argv)
 		outfile = outfilename.getValue();
 
 	} catch (TCLAP::ArgException &e)
-	{ std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl; }
+	{
+		std::cerr << "error: " << e.error() << " for arg " << e.argId() << std::endl;
+	}
 	// End of command line parsing
 	
 	//Adjust received arguments as necessary
